@@ -1,0 +1,43 @@
+# vim: set ft=make :
+
+
+# List recipes
+list:
+	just --list
+
+
+
+# Update system
+update-system:
+	sudo rpm-ostree update
+   
+
+# Update Distrobox containers
+update-containers:
+	distrobox upgrade -a
+
+
+# Update device firmware
+[no-exit-message]
+update-firmware:
+	sudo fwupdmgr --force refresh
+	sudo fwupdmgr get-updates
+	sudo fwupdmgr update
+
+
+# Update Nix
+update-homebrew:
+	brew update
+	brew upgrade
+
+
+# Clean up system
+clean-system:
+	podman system prune -a
+	sudo rpm-ostree cleanup -bm
+	brew autoremove
+	brew cleanup
+
+
+# Update everything
+update-everything: update-system update-containers update-homebrew
